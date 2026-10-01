@@ -1,0 +1,43 @@
+---
+interface Row {
+  label: string
+  total: number
+  correct: number
+  wrong: number
+}
+interface Props {
+  rows: Row[]
+  legend: { ok: string; bad: string; skip: string }
+  of: string
+}
+const { rows, legend, of } = Astro.props
+const pct = (n: number, total: number) => (total ? (n / total) * 100 : 0)
+---
+
+<div class="bars">
+  {
+    rows.map((r) => {
+      const skip = r.total - r.correct - r.wrong
+      return (
+        <div class="bar-row">
+          <div class="bar-label">
+            <b>{r.label}</b>
+            <span>
+              {of.replace('{n}', String(r.total))} · {r.correct} / {r.wrong} / {skip}
+            </span>
+          </div>
+          <div class="bar" role="img" aria-label={`${legend.ok} ${r.correct}, ${legend.bad} ${r.wrong}, ${legend.skip} ${skip}`}>
+            <i class="ok" style={`width:${pct(r.correct, r.total)}%`} />
+            <i class="bad" style={`width:${pct(r.wrong, r.total)}%`} />
+            <i class="skip" style={`width:${pct(skip, r.total)}%`} />
+          </div>
+        </div>
+      )
+    })
+  }
+  <p class="legend">
+    <span style="--c:var(--green)">{legend.ok}</span>
+    <span style="--c:var(--red)">{legend.bad}</span>
+    <span style="--c:var(--btn)">{legend.skip}</span>
+  </p>
+</div>

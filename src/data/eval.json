@@ -1,0 +1,310 @@
+{
+  "resolution": "1918×1078",
+  "summary": {
+    "model": "Xenova/clip-vit-base-patch32 (fp16)",
+    "captures": 248,
+    "msPerCapture": 54,
+    "biomeKnown": {
+      "total": 124,
+      "answered": 71,
+      "correct": 30,
+      "wrong": 41,
+      "precision": 42.3,
+      "coverage": 57.3
+    },
+    "biomeUnknown": {
+      "total": 53,
+      "answered": 28,
+      "correct": 0,
+      "wrong": 28,
+      "precision": 0,
+      "coverage": 52.8
+    },
+    "mob": {
+      "total": 71,
+      "answered": 20,
+      "correct": 17,
+      "wrong": 3,
+      "precision": 85,
+      "coverage": 28.2
+    },
+    "mobFalseAlarms": {
+      "total": 177,
+      "answered": 2
+    }
+  },
+  "byBiome": [
+    {
+      "id": "badlands",
+      "total": 2,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "basalt_deltas",
+      "total": 3,
+      "correct": 0,
+      "wrong": 2
+    },
+    {
+      "id": "beach",
+      "total": 1,
+      "correct": 1,
+      "wrong": 0
+    },
+    {
+      "id": "cherry_grove",
+      "total": 2,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "crimson_forest",
+      "total": 7,
+      "correct": 3,
+      "wrong": 2
+    },
+    {
+      "id": "dark_forest",
+      "total": 7,
+      "correct": 1,
+      "wrong": 4
+    },
+    {
+      "id": "desert",
+      "total": 6,
+      "correct": 0,
+      "wrong": 3
+    },
+    {
+      "id": "end_highlands",
+      "total": 2,
+      "correct": 1,
+      "wrong": 1
+    },
+    {
+      "id": "forest",
+      "total": 6,
+      "correct": 0,
+      "wrong": 2
+    },
+    {
+      "id": "jungle",
+      "total": 3,
+      "correct": 1,
+      "wrong": 1
+    },
+    {
+      "id": "meadow",
+      "total": 2,
+      "correct": 1,
+      "wrong": 1
+    },
+    {
+      "id": "mushroom_fields",
+      "total": 1,
+      "correct": 0,
+      "wrong": 1
+    },
+    {
+      "id": "nether_wastes",
+      "total": 11,
+      "correct": 7,
+      "wrong": 2
+    },
+    {
+      "id": "ocean",
+      "total": 3,
+      "correct": 2,
+      "wrong": 0
+    },
+    {
+      "id": "plains",
+      "total": 13,
+      "correct": 1,
+      "wrong": 9
+    },
+    {
+      "id": "river",
+      "total": 13,
+      "correct": 2,
+      "wrong": 5
+    },
+    {
+      "id": "savanna",
+      "total": 8,
+      "correct": 0,
+      "wrong": 2
+    },
+    {
+      "id": "snowy_plains",
+      "total": 10,
+      "correct": 4,
+      "wrong": 0
+    },
+    {
+      "id": "soul_sand_valley",
+      "total": 2,
+      "correct": 0,
+      "wrong": 1
+    },
+    {
+      "id": "stony_peaks",
+      "total": 3,
+      "correct": 0,
+      "wrong": 1
+    },
+    {
+      "id": "swamp",
+      "total": 2,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "taiga",
+      "total": 9,
+      "correct": 0,
+      "wrong": 3
+    },
+    {
+      "id": "the_end",
+      "total": 6,
+      "correct": 5,
+      "wrong": 1
+    },
+    {
+      "id": "warped_forest",
+      "total": 2,
+      "correct": 1,
+      "wrong": 0
+    }
+  ],
+  "byMob": [
+    {
+      "id": "blaze",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "chicken",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "cow",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "creeper",
+      "total": 3,
+      "correct": 1,
+      "wrong": 0
+    },
+    {
+      "id": "enderman",
+      "total": 8,
+      "correct": 7,
+      "wrong": 0
+    },
+    {
+      "id": "ghast",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "hoglin",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "horse",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "iron_golem",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "pig",
+      "total": 3,
+      "correct": 1,
+      "wrong": 1
+    },
+    {
+      "id": "piglin",
+      "total": 3,
+      "correct": 0,
+      "wrong": 1
+    },
+    {
+      "id": "sheep",
+      "total": 3,
+      "correct": 1,
+      "wrong": 0
+    },
+    {
+      "id": "skeleton",
+      "total": 6,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "slime",
+      "total": 3,
+      "correct": 3,
+      "wrong": 0
+    },
+    {
+      "id": "spider",
+      "total": 3,
+      "correct": 2,
+      "wrong": 0
+    },
+    {
+      "id": "strider",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "villager",
+      "total": 3,
+      "correct": 0,
+      "wrong": 1
+    },
+    {
+      "id": "witch",
+      "total": 3,
+      "correct": 1,
+      "wrong": 0
+    },
+    {
+      "id": "wolf",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "zombie",
+      "total": 3,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "id": "zombified_piglin",
+      "total": 3,
+      "correct": 1,
+      "wrong": 0
+    }
+  ]
+}

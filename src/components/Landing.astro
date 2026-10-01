@@ -1,0 +1,434 @@
+---
+import '@fontsource/silkscreen/400.css'
+import '@fontsource/silkscreen/700.css'
+import '@fontsource/noto-sans/400.css'
+import '@fontsource/noto-sans/600.css'
+import '@fontsource/noto-sans/700.css'
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/600.css'
+import '../styles/global.css'
+import type { Copy } from '../i18n/en'
+import evalData from '../data/eval.json'
+import Bars from './Bars.astro'
+import Breakdown from './Breakdown.astro'
+
+interface Props {
+  t: Copy
+}
+const { t } = Astro.props
+const base = import.meta.env.BASE_URL
+const media = (name: string) => `${base}media/${name}`
+const es = t.lang === 'es'
+
+const APP = '1.0.1'
+const MOD = '1.0.1'
+const appUrl = 'https://github.com/MguevaraJ/f2f3'
+const modUrl = 'https://github.com/MguevaraJ/f2f3-companion'
+const appFile = (f: string) => `${appUrl}/releases/download/v${APP}/${f}`
+const modFile = (mc: string) =>
+  `${modUrl}/releases/download/v${MOD}/f2f3-companion-${MOD}%2B${mc}.jar`
+const platforms = [
+  { id: 'linux', label: 'Linux · AppImage', file: `F2F3-${APP}.AppImage` },
+  { id: 'windows', label: 'Windows · .exe', file: `F2F3-Setup-${APP}.exe` }
+]
+const mcVersions = ['26.3', '1.21.1', '1.20.1']
+
+const s = evalData.summary
+const fill = (text: string, v: Record<string, string | number>) =>
+  text.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ''))
+const sections = [
+  ['use', t.nav.use],
+  ['app', t.nav.app],
+  ['mod', t.nav.mod],
+  ['tech', t.nav.tech],
+  ['ai', t.nav.ai]
+]
+const sidecar = `{
+  <span class="k">"format"</span>: <span class="s">"f2f3-companion"</span>, <span class="k">"schema"</span>: <span class="n">1</span>,
+  <span class="k">"world"</span>: { <span class="k">"name"</span>: <span class="s">"Technical"</span>, <span class="k">"seed"</span>: <span class="s">"-1844849896984713791"</span>,
+             <span class="k">"dimension"</span>: <span class="s">"minecraft:overworld"</span>, <span class="k">"day"</span>: <span class="n">12</span>, <span class="k">"weather"</span>: <span class="s">"clear"</span> },
+  <span class="k">"player"</span>: { <span class="k">"block"</span>: { <span class="k">"x"</span>: <span class="n">-1374</span>, <span class="k">"y"</span>: <span class="n">67</span>, <span class="k">"z"</span>: <span class="n">-2035</span> },
+              <span class="k">"facing"</span>: { <span class="k">"direction"</span>: <span class="s">"north"</span>, <span class="k">"yaw"</span>: <span class="n">-151.8</span> } },
+  <span class="k">"biome"</span>: <span class="s">"minecraft:desert"</span>, <span class="k">"light"</span>: { <span class="k">"sky"</span>: <span class="n">15</span>, <span class="k">"block"</span>: <span class="n">0</span> },
+  <span class="k">"target"</span>: { <span class="k">"entity"</span>: { <span class="k">"id"</span>: <span class="s">"minecraft:villager"</span>, <span class="k">"distance"</span>: <span class="n">3.2</span> } },
+  <span class="k">"entities"</span>: [ { <span class="k">"id"</span>: <span class="s">"minecraft:camel"</span>, <span class="k">"count"</span>: <span class="n">2</span>, <span class="k">"nearest"</span>: <span class="n">12.5</span> } ],
+  <span class="k">"structures"</span>: { <span class="k">"inside"</span>: [ <span class="s">"minecraft:village_desert"</span> ] },
+  <span class="k">"game"</span>: { <span class="k">"tick"</span>: { <span class="k">"rate"</span>: <span class="n">20.0</span>, <span class="k">"mspt"</span>: <span class="n">3.06</span> } }
+}`
+---
+
+<!doctype html>
+<html lang={t.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.title}</title>
+    <meta name="description" content={t.description} />
+    <link rel="icon" type="image/png" href={`${base}icon.png`} />
+    <link rel="alternate" hreflang="en" href={new URL(base, Astro.site)} />
+    <link rel="alternate" hreflang="es" href={new URL(`${base}es/`, Astro.site)} />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:image" content={new URL(media(`gallery.${t.lang}.webp`), Astro.site)} />
+    <meta name="theme-color" content="#313233" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="brand" href="#top"><img src={`${base}icon.png`} alt="" />F2+F3</a>
+        <nav class="tabs" aria-label={es ? 'Secciones' : 'Sections'}>
+          {sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+        </nav>
+        <div class="top-end">
+          <div class="lang" aria-label={es ? 'Idioma' : 'Language'}>
+            {es ? <span>ES</span> : <a href={`${base}es/`} hreflang="es">ES</a>}
+            {es ? <a href={base} hreflang="en">EN</a> : <span>EN</span>}
+          </div>
+          <a class="btn btn-green" href="#download">{t.nav.download}</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" style={`--hero-img: url(${media('hero.webp')})`}>
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="eyebrow">{t.hero.eyebrow}</p>
+            <h1>{t.hero.h1}</h1>
+            <p class="lead">{t.hero.lead}</p>
+            <div class="playbar">
+              <label>
+                {t.hero.platform}
+                <select id="platform">
+                  {platforms.map((p) => <option value={appFile(p.file)} data-os={p.id}>{p.label}</option>)}
+                </select>
+              </label>
+              <a class="btn btn-green btn-big" id="get" href={appFile(platforms[0].file)}>{t.hero.button}</a>
+              <p class="playbar-meta">v{APP}<br />{t.hero.meta}</p>
+            </div>
+          </div>
+          <figure class="shot">
+            <img src={media(`gallery.${t.lang}.webp`)} alt={t.app.features[0].alt} width="1430" height="894" />
+            <figcaption>{t.hero.caption}</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="use">
+        <div class="wrap">
+          <div class="head">
+            <p class="eyebrow">{t.use.eyebrow}</p>
+            <h2>{t.use.h2}</h2>
+            <p class="lead">{t.use.lead}</p>
+          </div>
+          <ol class="steps">
+            {t.use.steps.map((st) => (
+              <li>
+                <h3>{st.h}</h3>
+                <p>{st.p}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="section alt" id="app">
+        <div class="wrap">
+          <div class="head">
+            <p class="eyebrow">{t.app.eyebrow}</p>
+            <h2>{t.app.h2}</h2>
+            <p class="lead">{t.app.lead}</p>
+          </div>
+          {t.app.features.slice(1).map((f, i) => (
+            <div class:list={['feature', { flip: i % 2 === 1 }]}>
+              <div class="feature-text">
+                <h3>{f.h}</h3>
+                <p>{f.p}</p>
+                <ul>{f.li.map((x) => <li>{x}</li>)}</ul>
+              </div>
+              <figure class="shot">
+                <a href={media(`${f.img}.${t.lang}.webp`)} target="_blank"><img src={media(`${f.img}.${t.lang}.webp`)} alt={f.alt} loading="lazy" width="1430" height="894" /></a>
+              </figure>
+            </div>
+          ))}
+          <div class="sub">
+            <div class="grid two">
+              {[t.app.features[0], ...t.app.extra].map((x) => (
+                <div class="card">
+                  <h3>{x.h}</h3>
+                  <p>{x.p}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="mod">
+        <div class="wrap">
+          <div class="head">
+            <p class="eyebrow">{t.mod.eyebrow}</p>
+            <h2>{t.mod.h2}</h2>
+            <p class="lead">{t.mod.lead}</p>
+          </div>
+          <div class="grid two">
+            {t.mod.cards.map((c) => (
+              <div class="card">
+                <figure class="shot">
+                  {'video' in c && c.video ? (
+                    <video src={media(`${c.media}.mp4`)} poster={media(`${c.media}.webp`)} controls muted loop playsinline preload="none" width="1280" height="720" />
+                  ) : c.media === 'mod-sidecar' ? (
+                    <pre set:html={sidecar} />
+                  ) : (
+                    <img src={media(`${c.media}.webp`)} alt={c.h} loading="lazy" width="1280" height="720" />
+                  )}
+                </figure>
+                <h3>{c.h}</h3>
+                <p class="keys">{c.keys.map((k, i) => <>{i > 0 && '+'}<kbd>{k}</kbd></>)}</p>
+                <p>{c.p}</p>
+              </div>
+            ))}
+          </div>
+          {t.mod.englishOnly && <p class="muted" style="margin-top:20px">{t.mod.englishOnly}</p>}
+        </div>
+      </section>
+
+      <section class="section alt" id="tech">
+        <div class="wrap">
+          <div class="head">
+            <p class="eyebrow">{t.tech.eyebrow}</p>
+            <h2>{t.tech.h2}</h2>
+            <p class="lead">{t.tech.lead}</p>
+          </div>
+          <ol class="ladder">
+            {t.tech.ladder.map((l) => (
+              <li style={`--tier:${l.tier}`}>
+                <strong>{l.name}</strong>
+                <p>{l.p}</p>
+                <span class="badge">{l.badge}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="muted" style="margin-top:16px;max-width:70ch">{t.tech.ladderNote}</p>
+
+          <div class="sub split">
+            <div class="stack">
+              <h3>{t.tech.ocr.h}</h3>
+              {t.tech.ocr.p.map((p) => <p>{p}</p>)}
+            </div>
+            <figure class="shot">
+              <img src={media(`f3.${t.lang}.webp`)} alt={t.tech.ocr.h} loading="lazy" width="1430" height="894" />
+            </figure>
+          </div>
+
+          <div class="sub split">
+            <div class="stack">
+              <h3>{t.tech.contract.h}</h3>
+              <p>{t.tech.contract.p}</p>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr>{t.tech.contract.cols.map((c) => <th>{c}</th>)}</tr></thead>
+                <tbody>
+                  {t.tech.contract.files.map(([f, d, c]) => (
+                    <tr><td><code>{f}</code></td><td style="white-space:nowrap">{d}</td><td>{c}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="sub">
+            <h3>{t.tech.arch.h}</h3>
+            <p>{t.tech.arch.p}</p>
+            <div class="arch">
+              {t.tech.arch.boxes.map(([n, d]) => <div><b>{n}</b>{d}</div>)}
+            </div>
+            <ul class="ticks">{t.tech.arch.li.map((x) => <li>{x}</li>)}</ul>
+          </div>
+
+          <div class="sub split">
+            <div class="stack">
+              <h3>{t.tech.mechanics.h}</h3>
+              <p>{t.tech.mechanics.p}</p>
+              <ul class="ticks">{t.tech.mechanics.li.map((x) => <li>{x}</li>)}</ul>
+            </div>
+            <figure class="shot">
+              <img src={media(`planner.${t.lang}.webp`)} alt={t.tech.mechanics.h} loading="lazy" width="1430" height="894" />
+            </figure>
+          </div>
+
+          <div class="sub">
+            <h3>{t.tech.modTech.h}</h3>
+            <p>{t.tech.modTech.p}</p>
+            <ul class="ticks">{t.tech.modTech.li.map((x) => <li>{x}</li>)}</ul>
+            <div class="table-scroll">
+              <table>
+                <thead><tr>{t.tech.modTech.cols.map((c) => <th>{c}</th>)}</tr></thead>
+                <tbody>{t.tech.modTech.rows.map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="ai">
+        <div class="wrap">
+          <div class="head">
+            <p class="eyebrow">{t.ai.eyebrow}</p>
+            <h2>{t.ai.h2}</h2>
+            <p class="lead">{t.ai.lead}</p>
+          </div>
+
+          <div class="split">
+            <div class="stack">
+              <h3>{t.ai.local.h}</h3>
+              {t.ai.local.p.map((p) => <p>{p}</p>)}
+            </div>
+            <ul class="ticks">{t.ai.local.li.map((x) => <li>{x}</li>)}</ul>
+          </div>
+
+          <div class="sub">
+            <h3>{t.ai.results.h}</h3>
+            <p>{t.ai.results.p}</p>
+            <div class="stats">
+              <div class="stat">
+                <b>{s.mob.precision}%</b>
+                <span>{t.ai.results.precisionMob}</span>
+                <small>{fill(t.ai.results.precisionMobNote, { c: s.mob.correct, a: s.mob.answered })}</small>
+              </div>
+              <div class="stat">
+                <b>{s.biomeKnown.precision}%</b>
+                <span>{t.ai.results.precisionBiome}</span>
+                <small>{fill(t.ai.results.precisionBiomeNote, { c: s.biomeKnown.correct, a: s.biomeKnown.answered })}</small>
+              </div>
+              <div class="stat">
+                <b>{s.mobFalseAlarms.answered}</b>
+                <span>{t.ai.results.falseAlarm}</span>
+                <small>{fill(t.ai.results.falseAlarmNote, { a: s.mobFalseAlarms.answered, t: s.mobFalseAlarms.total })}</small>
+              </div>
+              <div class="stat">
+                <b>{s.msPerCapture} ms</b>
+                <span>{t.ai.results.speed}</span>
+                <small>{t.ai.results.speedNote}</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="sub split">
+            <div class="stack">
+              <h3>{t.ai.results.chart}</h3>
+              <Bars
+                rows={[
+                  { label: t.ai.results.rows.biomeKnown, ...s.biomeKnown },
+                  { label: t.ai.results.rows.biomeUnknown, ...s.biomeUnknown },
+                  { label: t.ai.results.rows.mob, ...s.mob }
+                ]}
+                legend={t.ai.results.legend}
+                of={t.ai.results.of}
+              />
+              <p>{t.ai.results.reading}</p>
+            </div>
+            <div class="stack">
+              <h3>{t.ai.results.method}</h3>
+              <ul class="ticks">
+                {t.ai.results.methodLi.map((x) => <li>{fill(x, { n: s.captures, res: evalData.resolution })}</li>)}
+              </ul>
+              <p class="muted"><code>{s.model}</code></p>
+              <Breakdown title={t.ai.results.perBiome} cols={t.ai.results.cols} rows={evalData.byBiome} />
+              <Breakdown title={t.ai.results.perMob} cols={t.ai.results.cols} rows={evalData.byMob} />
+            </div>
+          </div>
+
+          <div class="sub split">
+            <div class="stack">
+              <h3>{t.ai.advanced.h}</h3>
+              <p>{t.ai.advanced.p}</p>
+              <ul class="ticks">{t.ai.advanced.li.map((x) => <li>{x}</li>)}</ul>
+            </div>
+            <figure class="shot">
+              <img src={media(`ai-settings.${t.lang}.webp`)} alt={t.ai.advanced.h} loading="lazy" width="1430" height="894" />
+            </figure>
+          </div>
+
+          <div class="sub">
+            <h3>{t.ai.built.h}</h3>
+            <p>{t.ai.built.p}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="download">
+        <div class="wrap">
+          <div class="head">
+            <p class="eyebrow">{t.download.eyebrow}</p>
+            <h2>{t.download.h2}</h2>
+            <p class="lead">{t.download.lead}</p>
+          </div>
+          <div class="downloads">
+            <div class="card">
+              <h3>{t.download.appH}</h3>
+              <div class="dl-list">
+                {platforms.map((p) => (
+                  <a class="btn btn-green" href={appFile(p.file)}>{p.label}<small>{p.file}</small></a>
+                ))}
+              </div>
+              <p><a href={appUrl}>{t.download.source}</a></p>
+            </div>
+            <div class="card">
+              <h3>{t.download.modH}</h3>
+              <div class="dl-list">
+                {mcVersions.map((v) => (
+                  <a class="btn" href={modFile(v)}>Minecraft {v}<small>f2f3-companion-{MOD}+{v}.jar</small></a>
+                ))}
+              </div>
+              <p class="muted">{t.download.modNote}</p>
+              <p><a href={modUrl}>{t.download.source}</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>{t.footer.disclaimer}</p>
+        <p>{t.footer.made} <a href="https://github.com/MguevaraJ">github.com/MguevaraJ</a></p>
+      </div>
+    </footer>
+
+    <script is:inline>
+      // The hero button follows the platform selector, like the launcher's version picker.
+      const select = document.getElementById('platform')
+      const get = document.getElementById('get')
+      if (/Win/i.test(navigator.userAgent)) {
+        const win = [...select.options].find((o) => o.dataset.os === 'windows')
+        if (win) select.value = win.value
+      }
+      const sync = () => (get.href = select.value)
+      select.addEventListener('change', sync)
+      sync()
+
+      // Screenshots open at full size.
+      for (const img of document.querySelectorAll('.shot img')) {
+        if (!img.closest('a')) img.addEventListener('click', () => window.open(img.currentSrc || img.src, '_blank'))
+      }
+
+      // Underline the tab of the section in view.
+      const tabs = [...document.querySelectorAll('.tabs a')]
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue
+            for (const a of tabs) a.classList.toggle('on', a.hash === '#' + e.target.id)
+          }
+        },
+        { rootMargin: '-45% 0px -50% 0px' }
+      )
+      for (const a of tabs) {
+        const el = document.querySelector(a.hash)
+        if (el) io.observe(el)
+      }
+    </script>
+  </body>
+</html>
